@@ -1,0 +1,42 @@
+<div class="row" align="right">
+	
+	<button class="btn btn-info" ng-disabled="isEnable" ng-click="createOrder()">
+		Create Order
+	</button>	
+	<br><br>
+</div>
+<div class="row">
+	<table class="table table-striped">
+		<tr>
+			<th>Status</th>
+			<th>Orden Number</th>
+			<th>Client</th>
+			<th>Invoices</th>
+			<th>Actions</th>
+		</tr>
+		<tr ng-repeat="order in orders | limitTo: posicion | limitTo: -5">
+			<td>{{order.status}}</td>
+			<td>Order{{order.id}}</td>
+			<td>{{order.names}} {{order.surnames}}</td>
+			<td><a href="#">Show Invoice</a></td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<a href="#">Edit&nbsp;&nbsp;</a>
+						</td>
+						<td>
+							<a href="#">Delete&nbsp;&nbsp;</a>
+						</td>
+						<td>
+							<a href="#">Close&nbsp;&nbsp;</a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<button class="btn btn-primary" ng-click="anteriores()"><</button>
+	<button class="btn btn-primary" ng-click="siguiente()">></button>
+</div>
