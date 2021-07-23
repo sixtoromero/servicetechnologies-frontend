@@ -69,6 +69,8 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 
 	$scope.getInvoicesExists = function(order_id){
 		$scope.orderId = order_id;
+		$scope.isPayment = false;
+
 		$http.get('http://localhost/servicerest/public/index.php/api/invoices/FindById/' + order_id).success(function(data){			
 			if (data.data == null) {
 				$scope.createInvoice(order_id);
@@ -122,6 +124,7 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 
 	$scope.getPayments = function(invoice_id){
 		
+		$scope.payments = {};
 		$scope.invoiceId = invoice_id;
 		$scope.isPayment = true;
 
