@@ -1,6 +1,6 @@
 var app = angular.module('ordersApp',['ngRoute']);
 
-app.controller('mainCtrl', ['$scope','$http', function($scope,$http){
+app.controller('mainCtrl', ['$scope','$http', function($scope, $http){
   
 	$scope.menuSuperior = 'pages/menu.html';
 
@@ -28,3 +28,12 @@ app.filter('telefono', function(){
 		return numero.substring(0, 4) + "-" + numero.substring(4);
 	}
 });
+
+// app.directive('numberMask', function() {
+//     return {
+//         restrict: 'A',
+//         link: function(scope, element, attrs) {
+//             $(element).numeric();
+//         }
+//     }
+// });
