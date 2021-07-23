@@ -23,9 +23,14 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 
 	
 	$http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserId/' + $scope.dataUser.id).success(function(data){
-		$scope.orders = data.data;
-		console.log($scope.orders);
-	});		
+		$scope.orders = data.data;		
+	});			
+
+	$scope.getOrdersByUserId = function(user_id){				
+		$http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserId/' + user_id).success(function(data){			
+			$scope.orders = data.data;
+		});
+	}
 
 	$scope.siguiente = function(){
 		if ($scope.orders.length > $scope.posicion){
@@ -104,7 +109,7 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 	$scope.updateInvoice = function(order_id){
 		$scope.isEnable = true;
 
-		$http.post('http://localhost/servicerest/public/index.php/api/invoices/update/' + $scope.invoiceId, {"amountpaid": $scope.total }).success(function(data){
+		$http.put('http://localhost/servicerest/public/index.php/api/invoices/update/' + $scope.invoiceId, {"amountpaid": $scope.total }).success(function(data){
 			if (data.status === 201){	
 								
 				console.log('OrderID', order_id);
@@ -163,6 +168,22 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 			});
 		}		
 
-	}	
+	}
+
+	$scope.deleteOrder = function(order_id) {
+		
+		$scope.isInvoice = false;
+		$scope.isPayment = false;
+
+		var resp = confirm("Are you sure to delete the order?!");
+		if (resp) {
+			$http.get('http://localhost/servicerest/public/index.php/api/orders/delete/' + order_id).success(function(data){				
+				alert(data.message);				
+				if (data.status == 200) {
+					$scope.getOrdersByUserId($scope.dataUser.id);
+				}
+			});		
+		}
+	}
 	
 }]);
