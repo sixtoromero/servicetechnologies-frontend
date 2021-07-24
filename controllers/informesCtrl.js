@@ -11,11 +11,11 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
     $scope.isPayment = false;
 
 
-    $scope.allClient = function(){
-        
+    $scope.allClient = function(){                
+
         $http.get('http://localhost/servicerest/public/index.php/api/users').success(function(data){
 		    if (data.status == 200)  {
-                $scope.listClients = data.data;                
+                $scope.listClients = data.data;
             }else {
                 alert('Ha ocurrido un error');
             }
@@ -23,10 +23,15 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
     }
 
     $scope.ordresByUserId = function(IdUser){                
+                
+        $scope.listOrders = {};
+        $scope.orders = {};
+        $scope.payments = {};
+        $scope.isPayment = false;
+
         $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserId/' + IdUser).success(function(data){
 		    if (data.status == 200)  {                
-                $scope.listOrders = data.data;
-                console.log($scope.listOrders);
+                $scope.listOrders = data.data;                
             }else {
                 $scope.listOrders = {};
             }
@@ -34,31 +39,43 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
     }
 
     $scope.generateReportbyUser = function() {
+        
+        $scope.isPayment = false;
 
-        if ($scope.orderId == 0){
-            $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserIdAndOrders/' + $scope.userId).success(function(data){
-                if (data.status == 200)  {                
+        if ($scope.userId == 0) {            
+            $http.get('http://localhost/servicerest/public/index.php/api/orders/FindOrderAll/').success(function(data){
+                if (data.status == 200)  {
                     $scope.orders = data.data;
                 }else {
-                    $scope.listOrders = {};
+                    $scope.orders = {};
                 }
-	        });
+            });
         } else {
-            $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByOrderId/' + $scope.orderId).success(function(data){
-                if (data.status == 200)  {                
-                    $scope.orders = data.data;
-                }else {
-                    $scope.listOrders = {};
-                }
-	        });
+            if ($scope.orderId == 0){
+                $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserIdAndOrders/' + $scope.userId).success(function(data){
+                    if (data.status == 200)  {                
+                        $scope.orders = data.data;
+                    }else {
+                        $scope.listOrders = {};
+                    }
+                });
+            } else {
+                $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByOrderId/' + $scope.orderId).success(function(data){
+                    if (data.status == 200)  {                
+                        $scope.orders = data.data;
+                    }else {
+                        $scope.listOrders = {};
+                    }
+                });
+            }
         }
+        
     }
 
     $scope.viewPayments = function(invoice_id, order_id) {
         $scope.order_Id = order_id;
         $http.get('http://localhost/servicerest/public/index.php/api/payments/FindById/' + invoice_id).success(function(data){
-        debugger;    
-        if (data.status == 200)  {                   
+            if (data.status == 200)  {
                 //$scope.orders = data.data;
                 $scope.payments = data.data;
                 $scope.isPayment = true;
@@ -68,6 +85,6 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
                 alert('The Order has no assigned payments');
             }
         });
-    }
+    }    
 
 }]);
