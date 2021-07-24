@@ -4,6 +4,7 @@
 	</button>	
 	<br><br>
 </div>
+
 <div class="row">
 	<table class="table table-striped">
 		<tr>
@@ -17,7 +18,7 @@
 			<td>{{order.status}}</td>
 			<td>Order{{order.id}}</td>
 			<td>{{order.names}} {{order.surnames}}</td>
-			<td><a href="" ng-click="getInvoicesExists(order.id)">Show Invoice</a></td>
+			<td><a href="" ng-click="getInvoicesExists(order.id, order.status);">Show Invoice</a></td>
 			<td>
 				<table>
 					<tr>						
@@ -25,7 +26,7 @@
 							<a href="" ng-click="deleteOrder(order.id)">Delete&nbsp;&nbsp;</a>
 						</td>
 						<td>
-							<a href="">Close&nbsp;&nbsp;</a>
+							<a href="" ng-click="closeOrder(order.id)">Close&nbsp;&nbsp;</a>
 						</td>
 					</tr>
 				</table>
@@ -33,8 +34,8 @@
 		</tr>
 	</table>
 	
-	<button class="btn btn-primary" ng-click="anteriores()"><</button>
-	<button class="btn btn-primary" ng-click="siguiente()">></button>
+	<button class="btn btn-primary" ng-click="anteriores()" ng-disabled="isBtnOrder"><</button>
+	<button class="btn btn-primary" ng-click="siguiente()" ng-disabled="isBtnOrder">></button>
 	<br>
 	<br>
 	
@@ -84,7 +85,7 @@
 							Actions
 						</th>
 					</tr>
-					<tr ng-repeat="payment in payments | limitTo: posPayment | limitTo: -5">
+					<tr ng-repeat="payment in payments">
 						<td>
 							{{payment.amount | currency }}
 						</td>
@@ -95,10 +96,10 @@
 							<table>
 								<tr>
 									<td>
-										<a href="">Edit&nbsp;&nbsp;</a>
+										<a href="" ng-click="editPayment(payment)">Edit&nbsp;&nbsp;</a>
 									</td>
 									<td>
-										<a href="">Delete&nbsp;&nbsp;</a>
+										<a href="" ng-click="deletePayment(payment)">Delete&nbsp;&nbsp;</a>
 									</td>
 								</tr>
 							</table>
@@ -108,10 +109,10 @@
 			</td>
 		</tr>
 	</table>
-	<div ng-show="isPayment">
-		<button class="btn btn-primary" ng-click="antPayment()"><</button>
-		<button class="btn btn-primary" ng-click="sigPayment()">></button>
-	</div>
+	<!-- <div ng-show="isPayment">
+		<button class="btn btn-primary" ng-click="antPayment()" ng-disabled="isButtonDisable"><</button>
+		<button class="btn btn-primary" ng-click="sigPayment()" ng-disabled="isButtonDisable">></button>
+	</div> -->
 	
 	<br>
 	<br>		
