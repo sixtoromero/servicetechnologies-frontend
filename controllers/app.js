@@ -19,6 +19,14 @@ app.controller('mainCtrl', ['$scope','$http', function($scope, $http){
 
 	}
 
+	$scope.logOut = function(){
+		let res = confirm('Do you want to log out?');
+		if (res){
+			localStorage.removeItem('user');
+			window.location = 'auth/login.html';
+		}
+	}
+
 }]);
 
 
