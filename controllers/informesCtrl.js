@@ -1,5 +1,8 @@
 app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
+    
     $scope.setActive("mUsers");
+
+    $scope.urlAPI = 'https://servicestenhnologies.herokuapp.com/public/index.php/api/';
 
     $scope.listClients = {};
     $scope.listOrders = {};
@@ -8,12 +11,11 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
     $scope.userId = 0;
     $scope.orderId = 0;
     $scope.order_Id = '';
-    $scope.isPayment = false;
-
+    $scope.isPayment = false;    
 
     $scope.allClient = function(){                
 
-        $http.get('http://localhost/servicerest/public/index.php/api/users').success(function(data){
+        $http.get($scope.urlAPI + 'users').success(function(data){
 		    if (data.status == 200)  {
                 $scope.listClients = data.data;
             }else {
@@ -29,7 +31,7 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
         $scope.payments = {};
         $scope.isPayment = false;
 
-        $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserId/' + IdUser).success(function(data){
+        $http.get($scope.urlAPI + 'orders/FindByUserId/' + IdUser).success(function(data){
 		    if (data.status == 200)  {                
                 $scope.listOrders = data.data;                
             }else {
@@ -43,7 +45,7 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
         $scope.isPayment = false;
 
         if ($scope.userId == 0) {            
-            $http.get('http://localhost/servicerest/public/index.php/api/orders/FindOrderAll/').success(function(data){
+            $http.get($scope.urlAPI + 'orders/FindOrderAll/').success(function(data){
                 if (data.status == 200)  {
                     $scope.orders = data.data;
                 }else {
@@ -52,7 +54,7 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
             });
         } else {
             if ($scope.orderId == 0){
-                $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByUserIdAndOrders/' + $scope.userId).success(function(data){
+                $http.get($scope.urlAPI + 'orders/FindByUserIdAndOrders/' + $scope.userId).success(function(data){
                     if (data.status == 200)  {                
                         $scope.orders = data.data;
                     }else {
@@ -60,7 +62,7 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
                     }
                 });
             } else {
-                $http.get('http://localhost/servicerest/public/index.php/api/orders/FindByOrderId/' + $scope.orderId).success(function(data){
+                $http.get($scope.urlAPI + 'orders/FindByOrderId/' + $scope.orderId).success(function(data){
                     if (data.status == 200)  {                
                         $scope.orders = data.data;
                     }else {
@@ -74,7 +76,7 @@ app.controller('informesCtrl', ['$scope', '$http', function($scope, $http){
 
     $scope.viewPayments = function(invoice_id, order_id) {
         $scope.order_Id = order_id;
-        $http.get('http://localhost/servicerest/public/index.php/api/payments/FindById/' + invoice_id).success(function(data){
+        $http.get($scope.urlAPI + 'payments/FindById/' + invoice_id).success(function(data){
             if (data.status == 200)  {
                 //$scope.orders = data.data;
                 $scope.payments = data.data;
