@@ -58,7 +58,7 @@
 
 </head>
 <body>
-    <div class="container login-container">
+    <div class="container login-container" ng-show="!isCreateUser">
         <div class="row">
             <div class="col-md-6 login-form-1">
                 <h3>Login</h3>
@@ -71,10 +71,46 @@
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary" ng-click="getLogin()">Login</button>
+                        <button class="btn btn-default" ng-click="isCreateUser = true;">Register</button>
                     </div>                    
                 </form>
             </div>
         </div>
-    </div>    
+    </div>
+    
+    <div class="container login-container" ng-show="isCreateUser">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                <h3>Register</h3>
+                <form ng-submit="registerUser()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="user.names" placeholder="Names *" value="" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="user.surnames" placeholder="Sur Names *" value=""  required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="user.email" placeholder="Your Email *" value=""  required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="user.usertype" placeholder="User Type *" value="" readonly="readonly"  required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="user.address" placeholder="Your Address*" value=""  required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="user.cellphone" placeholder="Your Cellphone" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" ng-model="user.password" placeholder="Your Password *" value=""  required/>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" ng-click="registerUser()">Register</button>
+                        <button class="btn btn-primary" ng-click="isCreateUser = false;">Login</button>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
