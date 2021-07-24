@@ -1,6 +1,6 @@
 app.controller('usersCtrl', ['$scope','$http', function($scope,$http){
 	
-	$scope.setActive("mUsers");
+	//$scope.setActive("mUsers");
 
 	$scope.users = {};
 	$scope.posicion = 5;
