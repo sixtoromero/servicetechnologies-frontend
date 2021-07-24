@@ -106,7 +106,7 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 				$scope.createInvoice(order_id);
 				$scope.getInvoicesExists(order_id, status);
 			} else {				
-				$scope.isInvoice = true;
+				$scope.isInvoice = true;				
 				$scope.invoice = data.data;				
 				$scope.remainamount = (+data.data["amounttopay"]) - (+data.data["amountpaid"]);
 				$scope.amountpaid = (+data.data["amounttopay"]) - (+$scope.remainamount);
@@ -131,8 +131,7 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 	}
 
 	$scope.updateInvoice = function(order_id){
-		$scope.isEnable = true;
-
+		$scope.isEnable = true;		
 		$http.put('http://localhost/servicerest/public/index.php/api/invoices/update/' + $scope.invoiceId, {"amountpaid": $scope.total }).success(function(data){
 			if (data.status === 201){	
 								
@@ -143,6 +142,8 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 
 				$scope.getInvoicesExists(order_id, $scope.status);
 				$scope.getPayments($scope.invoiceId);				
+
+				$scope.isEnable = false;
 			}
 			else {
 				$scope.actualizado = false;
@@ -155,13 +156,13 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 		
 		$scope.payments = {};
 		$scope.invoiceId = invoice_id;
-		$scope.isPayment = true;
+		$scope.isPayment = true;		
 
 		$http.get('http://localhost/servicerest/public/index.php/api/payments/FindById/' + invoice_id).success(function(data){
 			if (data.data != null) {
 				//$scope.createInvoice(order_id);
 				$scope.payments = data.data;
-				console.log($scope.payments);
+				//console.log($scope.payments);
 			}
 		});
 	}
@@ -237,19 +238,10 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 		if ($scope.status == 'Open') {
 			
 			var amountPay = prompt('Enter a new value.', item.amount);
-						
-
-			$scope.isEnable = true;
-			
+									
 			$http.put('http://localhost/servicerest/public/index.php/api/payments/update/' + item.id, { "amount": amountPay }).success(function(data){
 				if (data.status === 200){
-
-					$http.put('http://localhost/servicerest/public/index.php/api/invoices/updatePayment/' + item.invoice_id, null).success(function(result){
-						if (result.status === 200){
-							$scope.getInvoicesExists($scope.orderId, $scope.status);
-							$scope.getPayments(item.invoice_id);
-						}
-					});
+					$scope.updatePayments(item.invoice_id);					
 				}
 				else {					
 					alert(data.data.message);
@@ -261,11 +253,24 @@ app.controller('inicioCtrl', ['$scope', '$http', function($scope, $http){
 		}
 	}
 
+	$scope.updatePayments = function(invoice_id){		
+		$http.put('http://localhost/servicerest/public/index.php/api/invoices/updatePayment/' + invoice_id, null).success(function(result){
+			if (result.status === 200){
+				$scope.getInvoicesExists($scope.orderId, $scope.status);
+				$scope.getPayments(item.invoice_id);
+			}
+		});
+	}
+
 	$scope.deletePayment = function(item) {
 		if ($scope.status == 'Open') {
 			let result = confirm('Are you sure you want to delete the payment?');
 			if (result){
-				
+				$http.get('http://localhost/servicerest/public/index.php/api/payments/delete/' + item.id).success(function(data){
+					if (data.status == 200) {
+						$scope.updatePayments(item.invoice_id);
+					}
+				});
 			}
 		} else {
 			alert('You cannot remove a payment if the status of the Order is Closed.');
