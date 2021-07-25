@@ -8,7 +8,7 @@ app.controller('loginCtrl', ['$scope','$http', function($scope,$http){
     $scope.user.usertype = 'Client';        
 
     $scope.getLogin = function() {        
-        $http.post($scope.urlAPI + 'login', $scope.user).success(function(data){
+        $http.post('https://servicestenhnologies.herokuapp.com/public/index.php/auth/login', $scope.user).success(function(data){
             //console.log(data);
             if (data['status'] === 200){                
                 localStorage.setItem('user', JSON.stringify(data['data']));
